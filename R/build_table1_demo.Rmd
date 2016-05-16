@@ -20,6 +20,7 @@ knitr::opts_chunk$set(echo = TRUE)
 library(dplyr, warn.conflicts = FALSE, verbose=FALSE, quietly = TRUE)
 library(tidyr, warn.conflicts = FALSE, verbose=FALSE, quietly = TRUE)
 devtools::install_github("svannoy/table1")
+library(table1)
 source("~/Documents/GitHub/MyGeneralRFunctions/myPrintFunctions.R")
 ```
 

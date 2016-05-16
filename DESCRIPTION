@@ -1,0 +1,19 @@
+Package: table1
+Type: Package
+Title: Creates a Table of Descriptives Suited for MS-Word
+Version: 0.0.0.9000
+Author: Steven Vannoy
+Maintainer: Steven Vannoy <steven.vannoy@gmail.com>
+Description: This package provides functions aimed at easing the creation of a "Table 1" for psycho-social research. Table 1 is typically a table that contains demographic information on a study's sample. If the study is stratefied into groups (such as control and treatment) then Table 1 traditionally includes the results of statistical tests to identify substantical differences in demographic distributions based on the stratification.
+License: GPL-2
+LazyData: TRUE
+RoxygenNote: 5.0.1
+Date: "5/16/2016"
+Imports:
+  dplyr,
+  tidyr
+BugReports: https://github.com/svannoy/table1/issues
+URL: https://github.com/svannoy/table1
+Authors@R: person("Steven", "Vannoy", email = "steven.vannoy@gmail.com",
+  role = c("aut", "cre"))
+Suggests: testthat
