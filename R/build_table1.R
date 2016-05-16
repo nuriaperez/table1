@@ -44,7 +44,7 @@ buildTable1Rows <- function(theVariable, theData, groupBy = NULL, percentFirst =
     if (!(theVariable %in% colnames(theData)))
     {
         stop(paste("Called getTable1Row with theVariable set to ", theVariable,
-            " but it is not a column name in theData"))
+            " but it is not a column name in theData", sep=''))
     }
 
     if (is.null(groupBy) == FALSE)
@@ -52,12 +52,12 @@ buildTable1Rows <- function(theVariable, theData, groupBy = NULL, percentFirst =
         if (!(groupBy %in% colnames(theData)))
         {
             stop(paste("Called getTable1Row with groupBy set to ", groupBy,
-                " but it is not a column name in theData"))
+                " but it is not a column name in theData", sep=''))
         }
         if (is.factor(theData[, groupBy]) == FALSE)
         {
             stop(paste("Called getTable1Row with groupBy = ", groupBy,
-                " but ", groupBy, " is not a factor"))
+                " but ", groupBy, " is not a factor", sep=''))
         }
     }
 
