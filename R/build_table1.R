@@ -258,7 +258,7 @@ buildTable1Rows <- function(theVariable, theData, groupBy = NULL, percentFirst =
 #' @examples
 #' table1Tables <- buildTable1List(theData = theDataFrame, theVariables = c("age", "sex", "Race1", "Ethnicity", "Rank"), groupBy="site", percentFirst = TRUE, meanDigits = 1, sdDigits = 1, freqDigits = 2, statDigits = 2, pDigits = 5)
 #' lapply(table1Tables, print)
-buildTable1List <- function(theData, theVariables, groupBy, percentFirst = TRUE,
+buildTable1 <- function(theData, theVariables, groupBy, percentFirst = TRUE,
     conductGroupTests = TRUE, combineTables = TRUE, meanDigits = getOption("digits"), sdDigits = getOption("digits"),
     freqDigits = getOption("digits"), statDigits = getOption("digits"),
     pDigits = getOption("digits"))
@@ -269,6 +269,7 @@ buildTable1List <- function(theData, theVariables, groupBy, percentFirst = TRUE,
         sdDigits = sdDigits, freqDigits = freqDigits, statDigits = statDigits,
         pDigits = pDigits)
 
+    # Combine tables into one df if requested, otherwise just return the list of tables
     if (combineTables == TRUE){
       table1 <- NULL
       for (i in seq_along(table1List)){
