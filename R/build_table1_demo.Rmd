@@ -3,10 +3,10 @@ title: "Demo file for table1 package"
 author: "Steven Vannoy"
 date: "May 16, 2016"
 output:
-  html_document: default
+  word_document: default
   pdf_document:
     latex_engine: xelatex
-  word_document: default
+  html_document: default
 ---
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -19,21 +19,17 @@ knitr::opts_chunk$set(echo = TRUE)
 ##
 library(dplyr, warn.conflicts = FALSE, verbose=FALSE, quietly = TRUE)
 library(tidyr, warn.conflicts = FALSE, verbose=FALSE, quietly = TRUE)
-devtools::install_github("svannoy/table1")
-library(table1)
+source("~/Documents/GitHub/table1/R/build_table1.R")
 source("~/Documents/GitHub/MyGeneralRFunctions/myPrintFunctions.R")
+
+load("~/Documents/GitHub/table1/data/table1Dat.rda")
 ```
 
 ```{r echo=TRUE}
 
-table1Tables <- buildTable1List(theData = table1Dat, theVariables = c("age", "sex", "Race1", "Ethnicity", "Rank"), groupBy="site", percentFirst = TRUE,
-                              meanDigits = 1, sdDigits = 1, freqDigits = 2, statDigits = 2, pDigits = 5)
+table1 <- buildTable1List(theData = table1Dat, theVariables = c("age", "sex", "Race1", "Ethnicity", "Rank"), groupBy="site", percentFirst = TRUE, combineTables = TRUE, meanDigits = 1, sdDigits = 1, freqDigits = 2, statDigits = 2, pDigits = 5)
 ```
 ```{r echo=FALSE}
-knitr::kable(table1Tables[[1]]) # age
-knitr::kable(table1Tables[[2]]) # sex
-knitr::kable(table1Tables[[3]]) # Race
-knitr::kable(table1Tables[[4]]) # Ethnicity
-knitr::kable(table1Tables[[5]]) # Rank
+knitr::kable(table1)
 ```
 

@@ -75,9 +75,9 @@ buildTable1Rows <- function(theVariable, theData, groupBy = NULL, percentFirst =
     # groupBy)
     if (is.numeric(theData[, theVariable]))
     {
-        table1Rows <- data.frame(Demographic = theVariable, Value = sprintf(numericFormatStr,
+        table1Rows <- data.frame(Demographic = theVariable, Level = '', Value = sprintf(numericFormatStr,
             mean(theData[, theVariable], na.rm = TRUE), sd(theData[, theVariable],
-                na.rm = TRUE)))
+                na.rm = TRUE)), stringsAsFactors = FALSE)
     } else
     {
         rows <- cbind(prop.table(table(theData[, theVariable])) * 100,
@@ -138,7 +138,7 @@ buildTable1Rows <- function(theVariable, theData, groupBy = NULL, percentFirst =
                 f <- paste(theVariable, "~", groupBy)
                 aov_summary <- summary(do.call("aov", list(as.formula(f),
                   data = theData)))
-                table1Rows <- cbind(table1Rows, FStat = sprintf(statFormatStr,
+                table1Rows <- cbind(table1Rows, Stat = sprintf(statFormatStr,
                   aov_summary[[1]][["F value"]][1]), PValue = sprintf(pFormatStr,
                   aov_summary[[1]][["Pr(>F)"]][1]), stringsAsFactors = FALSE)
                 # Just for snazzy feature, put a '<' sign in front of pvalue if it is
@@ -146,7 +146,7 @@ buildTable1Rows <- function(theVariable, theData, groupBy = NULL, percentFirst =
                 # zero is helpful/valid
                 if (as.numeric(table1Rows$PValue) == 0)
                 {
-                  table1Rows$PValue <- paste("< ", gsub("(.*)\\0", "\\1", table1Rows$PValue, '1'), sep='')
+                  table1Rows$PValue <- paste("< ", gsub("(.*)\\0", "\\1", table1Rows$PValue, '1'),'01', sep='')
                 }
             }
         } else
@@ -169,6 +169,9 @@ buildTable1Rows <- function(theVariable, theData, groupBy = NULL, percentFirst =
             names(groupTable) <- c(theVariable, groupBy, "countPercentStr")
             groupTable <- spread_(groupTable, groupBy, "countPercentStr")
             table1Rows <- left_join(x = table1Rows, y = groupTable, by = theVariable)
+            table1Rows <- cbind(Demographic = c(theVariable, rep('', nrow(table1Rows)-1)), table1Rows)
+            table1Rows <- rename_(table1Rows, Level = theVariable)
+            table1Rows$Level <- as.character(table1Rows$Level)
 
             # Do chi-square test to see if they differ by grouping variable
             if (conductGroupTests == TRUE)
@@ -186,10 +189,8 @@ buildTable1Rows <- function(theVariable, theData, groupBy = NULL, percentFirst =
                 chiProbs <- prop.table(table(theData[, theVariable]))
                 chiData <- as.matrix(chiData)
                 chiSquareResults <- chisq.test(chiData)
-                chiSquareResults$statistic
-                chiSquareResults$p.value
 
-                table1Rows$Chisq <- c(sprintf(statFormatStr, as.numeric(chiSquareResults$statistic)),
+                table1Rows$Stat <- c(sprintf(statFormatStr, as.numeric(chiSquareResults$statistic)),
                   rep("", nrow(table1Rows) - 1))
                 table1Rows$PValue <- c(sprintf(pFormatStr, as.numeric(chiSquareResults$p.value)),
                   rep("", nrow(table1Rows) - 1))
@@ -198,10 +199,24 @@ buildTable1Rows <- function(theVariable, theData, groupBy = NULL, percentFirst =
                 # zero is helpful/valid
                 if (as.numeric(table1Rows$PValue[1]) == 0)
                 {
-                  table1Rows$PValue[1] <- paste("< ", gsub("(.*)\\0", "\\1", table1Rows$PValue[1], '1'), sep='')
+                  table1Rows$PValue[1] <- paste("< ", gsub("(.*)\\0", "\\1", table1Rows$PValue[1], '1'),'01', sep='')
                 }
             }
         }
+    } else
+    { # Need to setup the 'Levels' and 'Demographic' here if there is no groupBy being done
+
+      # When it's numeric, we just add an empty Level
+      if (is.numeric(theData[, theVariable]) == TRUE)
+      {
+        table1Rows$Level <- ''
+        table1Rows <- select(table1Rows, Demographic, Level, everything())
+      } else
+      {
+        table1Rows <- cbind(Demographic = c(theVariable, rep('', nrow(table1Rows)-1)), table1Rows)
+        table1Rows <- rename_(table1Rows, Level = theVariable)
+      }
+
     }
     return(table1Rows)
 }
@@ -217,13 +232,14 @@ buildTable1Rows <- function(theVariable, theData, groupBy = NULL, percentFirst =
 #' @param groupBy A variable (factor) used to stratify the variable being reported (see details below).
 #' @param percentFirst A boolean, if TRUE numeric variables are printed as x\%(n) otherwise as n(x\%).
 #' @param conductGroupTests A boolean, if TRUE group comparisons are conducted (see details below).
+#' @param combineTables A boolean, if TRUE tables are combined into 1 data frame, otherwise a list is returned with a data.frame for each variable.
 #' @param meanDigits An integer indicating number of digits printed following the decimal place (this is not precision as in round, you get the number of digits you ask for, even if they are zero).
 #' @param meanDigits An integer indicating number of digits printed following the decimal place for means (this is not precision as in round, you get the number of digits you ask for, even if they are zero)
 #' @param sdDigits An integer indicating number of digits printed following the decimal place for standard deviations (this is not precision as in round, you get the number of digits you ask for, even if they are zero).
 #' @param freqDigits An integer indicating number of digits printed following the decimal place for percentages (this is not precision as in round, you get the number of digits you ask for, even if they are zero).
 #' @param statDigits An integer indicating number of digits printed following the decimal place for test statistics (this is not precision as in round, you get the number of digits you ask for, even if they are zero).
 #' @param pDigits An integer indicating number of digits printed following the decimal place for test P-Values (if numer of zeros in P is greater than pDigits the value will be "< 000...1").
-#' @return A list of data.frames one for each variable. All columns in the respective data frames are character vectors. For
+#' @return If combineTables is TRUE, then a single data.frame is returned. Otherwise, a list of data.frames one for each variable. All columns in the respective data frames are character vectors. For
 #' numeric variables, the column will contain the mean and standard deviation in the form(s) described above. For factor variables
 #' multiple rows are generated where columns will contain frequencies reported in percentages and counts "n" in the form described above.
 #'
@@ -243,7 +259,7 @@ buildTable1Rows <- function(theVariable, theData, groupBy = NULL, percentFirst =
 #' table1Tables <- buildTable1List(theData = theDataFrame, theVariables = c("age", "sex", "Race1", "Ethnicity", "Rank"), groupBy="site", percentFirst = TRUE, meanDigits = 1, sdDigits = 1, freqDigits = 2, statDigits = 2, pDigits = 5)
 #' lapply(table1Tables, print)
 buildTable1List <- function(theData, theVariables, groupBy, percentFirst = TRUE,
-    conductGroupTests = TRUE, meanDigits = getOption("digits"), sdDigits = getOption("digits"),
+    conductGroupTests = TRUE, combineTables = TRUE, meanDigits = getOption("digits"), sdDigits = getOption("digits"),
     freqDigits = getOption("digits"), statDigits = getOption("digits"),
     pDigits = getOption("digits"))
     {
@@ -252,4 +268,15 @@ buildTable1List <- function(theData, theVariables, groupBy, percentFirst = TRUE,
         groupBy = groupBy, conductGroupTests = conductGroupTests, meanDigits = meanDigits,
         sdDigits = sdDigits, freqDigits = freqDigits, statDigits = statDigits,
         pDigits = pDigits)
+
+    if (combineTables == TRUE){
+      table1 <- NULL
+      for (i in seq_along(table1List)){
+         table1 <- rbind(table1, table1List[[i]])
+      }
+      return(table1)
+    } else
+    {
+      return(table1List)
+    }
 }
