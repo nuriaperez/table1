@@ -248,7 +248,8 @@ buildTable1Rows <- function(theVariable, theData, groupBy = NULL, percentFirst =
 #' group means, factors are evaluated by \eqn{chi}-squared test of independence.
 #'
 #'\itemize{
-#'   \item Demographic: 1st column for numeric variables value is the name of the variable
+#'   \item Demographic: The name of the variable described in the row
+#'   \item Level: Blank for numeric variables, one row per level for factor (categorical) variables
 #'   \item Value: the mean and standard deviation of theVariable ordered as described above
 #'   \item Group: if groupBy is used then there will be a column for each level of the factor with frequencies and counts
 #'   \item Stat: if
@@ -258,6 +259,9 @@ buildTable1Rows <- function(theVariable, theData, groupBy = NULL, percentFirst =
 #' @examples
 #' table1Tables <- buildTable1List(theData = theDataFrame, theVariables = c("age", "sex", "Race1", "Ethnicity", "Rank"), groupBy="site", percentFirst = TRUE, meanDigits = 1, sdDigits = 1, freqDigits = 2, statDigits = 2, pDigits = 5)
 #' lapply(table1Tables, print)
+#'
+#' @seealso \code{\link{buildTable1Rows}}
+#'
 buildTable1 <- function(theData, theVariables, groupBy, percentFirst = TRUE,
     conductGroupTests = TRUE, combineTables = TRUE, meanDigits = getOption("digits"), sdDigits = getOption("digits"),
     freqDigits = getOption("digits"), statDigits = getOption("digits"),

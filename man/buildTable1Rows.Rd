@@ -33,27 +33,10 @@ buildTable1Rows(theVariable, theData, groupBy = NULL, percentFirst = TRUE,
 \item{meanDigits}{An integer indicating number of digits printed following the decimal place for means (this is not precision as in round, you get the number of digits you ask for, even if they are zero)}
 }
 \value{
-A data.frame, each column is a character vectors. For numeric variables, the column will contain the mean and standard deviation in the form described above. For factor variables
-multiple rows are generated where columns will contain frequencies reported in percentages and counts "n" in the form described above.
-
-
-If groupBy is specified then statistical tests are conducted to compare groups. For numeric variables ANOVA is used to compare
-group means, factors are evaluated by \eqn{chi}-squared test of independence.
-
-\itemize{
-  \item \bold{Demographic}:  1st column for numeric variables value is the name of the variable.
-  \item \bold{Value}: the mean and standard deviation of theVariable ordered as described above.
-  \item \bold{Group}: if groupBy is used then there will be a column for each level of the factor with frequencies and counts.
-  \item \bold{Stat}: if groupBy is used AND conductGroupTests == TRUE this value contains either the F statistic "FStat" for numeric.
-  variables or the chi-square "Chisq" statistic for categorical variables.
-  \item \bold{PValue}: if groupBy is used AND conductGroupTests == TRUE this value contains the p value returned by the respective test.
-  Note, pDigits determines how many digits follow the decimal place. If p is small enough that this string would be all zeros,
-  the string is modified to be "< 0.000..1" where number of zeros to the right of the decimal is pDigits-1.
-}
+A data.frame.
 }
 \description{
-Creates an entry for "Table-1" for demographic variables in a study. See buildTable1List to build a
-table with one call.
+One row is produced for numeric variables, multiple rows for factors.
 }
 \examples{
 buildTable1Rows(theData = myDataFrame, theVariable = "age", groupBy="site", percentFirst = TRUE, conductGroupTests = TRUE, meanDigits = 1, sdDigits = 1, freqDigits = 2, statDigits = 2, pDigits = 5)
