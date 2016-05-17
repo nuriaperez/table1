@@ -233,7 +233,6 @@ buildTable1Rows <- function(theVariable, theData, groupBy = NULL, percentFirst =
 #' @param conductGroupTests A boolean, if TRUE group comparisons are conducted (see details below).
 #' @param combineTables A boolean, if TRUE tables are combined into 1 data frame, otherwise a list is returned with a data.frame for each variable.
 #' @param meanDigits An integer indicating number of digits printed following the decimal place (this is not precision as in round, you get the number of digits you ask for, even if they are zero).
-#' @param meanDigits An integer indicating number of digits printed following the decimal place for means (this is not precision as in round, you get the number of digits you ask for, even if they are zero)
 #' @param sdDigits An integer indicating number of digits printed following the decimal place for standard deviations (this is not precision as in round, you get the number of digits you ask for, even if they are zero).
 #' @param freqDigits An integer indicating number of digits printed following the decimal place for percentages (this is not precision as in round, you get the number of digits you ask for, even if they are zero).
 #' @param statDigits An integer indicating number of digits printed following the decimal place for test statistics (this is not precision as in round, you get the number of digits you ask for, even if they are zero).
@@ -256,7 +255,7 @@ buildTable1Rows <- function(theVariable, theData, groupBy = NULL, percentFirst =
 #'
 #'
 #' @examples
-#' table1Tables <- buildTable1List(theData = theDataFrame, theVariables = c("age", "sex", "Race1", "Ethnicity", "Rank"), groupBy="site", percentFirst = TRUE, meanDigits = 1, sdDigits = 1, freqDigits = 2, statDigits = 2, pDigits = 5)
+#' table1Tables <- buildTable1(theData = table1Dat, theVariables = c("age", "sex", "Race1", "Ethnicity", "Rank"), groupBy="site", percentFirst = TRUE, meanDigits = 1, sdDigits = 1, freqDigits = 2, statDigits = 2, pDigits = 5)
 #' lapply(table1Tables, print)
 #'
 #' @seealso \code{\link{buildTable1Rows}}
