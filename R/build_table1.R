@@ -255,7 +255,7 @@ buildTable1Rows <- function(theVariable, theData, groupBy = NULL, percentFirst =
 #'
 #'
 #' @examples
-#' table1Tables <- buildTable1(theData = table1Dat, theVariables = c("age", "sex", "Race1", "Ethnicity", "Rank"), groupBy="site", percentFirst = TRUE, meanDigits = 1, sdDigits = 1, freqDigits = 2, statDigits = 2, pDigits = 5)
+#' table1Tables <- buildTable1(theData = table1Dat, theVariables = c("age", "sex", "Race", "Ethnicity", "Rank"), groupBy="site", percentFirst = TRUE, meanDigits = 1, sdDigits = 1, freqDigits = 2, statDigits = 2, pDigits = 5)
 #' lapply(table1Tables, print)
 #'
 #' @seealso \code{\link{buildTable1Rows}}

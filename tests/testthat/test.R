@@ -2,13 +2,13 @@ library(table1)
 context("Full Table")
 
 test_that("buildTable1 runs full table development without any errors", {
-  table1TableList <- buildTable1(theData = table1Dat, theVariables = c("age", "sex", "Race1", "Ethnicity", "Rank"), groupBy="site", percentFirst = TRUE,
+  table1TableList <- buildTable1(theData = table1Dat, theVariables = c("age", "sex", "Race", "Ethnicity", "Rank"), groupBy="site", percentFirst = TRUE,
                               meanDigits = 1, sdDigits = 1, freqDigits = 2, statDigits = 2, pDigits = 5)
 })
 
 test_that("buildTableList stops when given an empty table", {
 
-  expect_error(buildTable1(theData = NULL, theVariables = c("age", "sex", "Race1", "Ethnicity", "Rank"), groupBy="site", percentFirst = TRUE,
+  expect_error(buildTable1(theData = NULL, theVariables = c("age", "sex", "Race", "Ethnicity", "Rank"), groupBy="site", percentFirst = TRUE,
                               meanDigits = 1, sdDigits = 1, freqDigits = 2, statDigits = 2, pDigits = 5), "Called getTable1Row passing something other than a data.frame as the argument to \"theData\"")
 })
 
