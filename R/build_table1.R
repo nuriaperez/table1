@@ -8,7 +8,6 @@
 #' @param percentFirst A boolean, if TRUE numeric variables are printed as x\%(n) otherwise as n(x\%).
 #' @param conductGroupTests A boolean, if TRUE group comparisons are conducted (see details below).
 #' @param meanDigits An integer indicating number of digits printed following the decimal place (this is not precision as in round, you get the number of digits you ask for, even if they are zero).
-#' @param meanDigits An integer indicating number of digits printed following the decimal place for means (this is not precision as in round, you get the number of digits you ask for, even if they are zero)
 #' @param sdDigits An integer indicating number of digits printed following the decimal place for standard deviations (this is not precision as in round, you get the number of digits you ask for, even if they are zero).
 #' @param freqDigits An integer indicating number of digits printed following the decimal place for percentages (this is not precision as in round, you get the number of digits you ask for, even if they are zero).
 #' @param statDigits An integer indicating number of digits printed following the decimal place for test statistics (this is not precision as in round, you get the number of digits you ask for, even if they are zero).

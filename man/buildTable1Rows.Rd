@@ -29,8 +29,6 @@ buildTable1Rows(theVariable, theData, groupBy = NULL, percentFirst = TRUE,
 \item{statDigits}{An integer indicating number of digits printed following the decimal place for test statistics (this is not precision as in round, you get the number of digits you ask for, even if they are zero).}
 
 \item{pDigits}{An integer indicating number of digits printed following the decimal place for test P-Values (if numer of zeros in P is greater than pDigits the value will be "< 000...1").}
-
-\item{meanDigits}{An integer indicating number of digits printed following the decimal place for means (this is not precision as in round, you get the number of digits you ask for, even if they are zero)}
 }
 \value{
 A data.frame.

@@ -12,6 +12,7 @@ Date: "5/16/2016"
 Imports:
   dplyr,
   tidyr
+Depends: R (>= 2.10)
 BugReports: https://github.com/svannoy/table1/issues
 URL: https://github.com/svannoy/table1
 Authors@R: person("Steven", "Vannoy", email = "steven.vannoy@gmail.com",
