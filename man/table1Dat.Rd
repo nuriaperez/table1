@@ -2,14 +2,14 @@
 \alias{table1Dat}
 \docType{data}
 \title{
-%%  table1Dat/data.frame
+table1Dat/data.frame
 }
 \description{
 %%  ~~ Demonstration data for the table1 package. Just enough to execute the examples and illustrate the features ~~
 }
 \usage{data("table1Dat")}
 \format{
-  A data frame with 1169 observations on the following 7 variables.
+  A data frame with 200 observations on the following 7 variables.
   \describe{
     \item{\code{study_id}}{a numeric vector}
     \item{\code{site}}{a factor with levels \code{Site_A} \code{Site_B}}
