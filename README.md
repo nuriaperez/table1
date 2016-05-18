@@ -9,6 +9,12 @@ It is also very common to conduct statistical tests to determine if demographic 
 
 While R does all of these tasks very easily, what is missing is a convenient way to assemble them into a table that can be exported to Microsoft Word (MS-Word) that doesn't require subtantial editing.
 
-The Table-1 package aims to make the creation of Table 1 much less painful. Here is an example of the desired final product:
 
+## Installation
 
+Development version from github:
+
+```R
+# install.packages("devtools")
+devtools::install_github("svannoy/table1")
+```

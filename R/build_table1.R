@@ -53,7 +53,7 @@ buildTable1Rows <- function(theVariable, theData, groupBy = NULL, percentFirst =
             stop(paste("Called getTable1Row with groupBy set to ", groupBy,
                 " but it is not a column name in theData", sep=''))
         }
-        if (sapply(theData[[groupBy]], class) != "factor")
+        if (sapply(theData[[groupBy]], class)[1] != "factor")
         {
             stop(paste("Called getTable1Row with groupBy = ", groupBy,
                 " but ", groupBy, " is not a factor", sep=''))
@@ -104,7 +104,7 @@ buildTable1Rows <- function(theVariable, theData, groupBy = NULL, percentFirst =
     {
         if (is.factor(theData[[theVariable]]) == FALSE)
         {
-          stop(paste("called buildTable1Rows with theVariable set to ", theVariable, " but it is of class ", class(theData[[theVariable]]), " rather than  a factor", sep = ''))
+          stop(paste("called buildTable1Rows with theVariable set to ", theVariable, " but it is of class ", class(theData[[theVariable]])[1], " rather than  a factor", sep = ''))
         }
 
         rows <- cbind(prop.table(table(theData[[theVariable]])) * 100,
@@ -204,7 +204,7 @@ buildTable1Rows <- function(theVariable, theData, groupBy = NULL, percentFirst =
                 groupByColumn <- match(groupBy, names(theData))
                 numGroups <- length(levels(theData[[groupByColumn]]))
                 varColumn <- match(theVariable, names(theData))
-                numVarLevels <- length(levels(theData[, varColumn]))
+                numVarLevels <- length(levels(theData[[varColumn]]))
                 chiData$row <- rep(1:numVarLevels, numGroups)
                 chiData <- tidyr::spread_(data = chiData, key = groupBy, value = "Freq")
                 chiData$row <- NULL
