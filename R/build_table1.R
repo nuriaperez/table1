@@ -95,7 +95,7 @@ buildTable1Rows <- function(theVariable, theData, groupBy = NULL, percentFirst =
 
     # Process the 'main' demographic (i.e. the total value ignoring
     # groupBy)
-    if (is.numeric(theData[, theVariable]))
+    if (is.numeric(theData[, theVariable]) | is.integer(theData[, theVariable]))
     {
         table1Rows <- data.frame(Demographic = theVariable, Level = '', Value = sprintf(numericFormatStr,
             mean(theData[, theVariable], na.rm = TRUE), sd(theData[, theVariable],
@@ -134,7 +134,7 @@ buildTable1Rows <- function(theVariable, theData, groupBy = NULL, percentFirst =
     {
         # Process the 'main' demographic (i.e. the total value ignoring
         # groupBy)
-        if (is.numeric(theData[, theVariable]) == TRUE)
+        if (is.numeric(theData[, theVariable]) == TRUE | is.numeric(theData[, theVariable]) == TRUE)
         {
             groupSummary <- dplyr::select_(theData, theVariable, groupBy) %>%
                 dplyr::group_by_(groupBy) %>% dplyr::select_(theVariable) %>% na.omit() %>%

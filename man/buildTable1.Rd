@@ -4,7 +4,7 @@
 \alias{buildTable1}
 \title{Build Table 1}
 \usage{
-buildTable1(theData, theVariables, groupBy, percentFirst = TRUE,
+buildTable1(theData, theVariables, groupBy = NULL, percentFirst = TRUE,
   conductGroupTests = TRUE, combineTables = TRUE,
   meanDigits = getOption("digits"), sdDigits = getOption("digits"),
   freqDigits = getOption("digits"), statDigits = getOption("digits"),
