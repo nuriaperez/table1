@@ -2,7 +2,7 @@
 \alias{table1Dat}
 \docType{data}
 \title{
-%%   ~~ data name/kind ... ~~
+%%  table1Dat/data.frame
 }
 \description{
 %%  ~~ Demonstration data for the table1 package. Just enough to execute the examples and illustrate the features ~~
