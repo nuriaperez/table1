@@ -53,7 +53,7 @@ buildTable1Rows <- function(theVariable, theData, groupBy = NULL, percentFirst =
             stop(paste("Called getTable1Row with groupBy set to ", groupBy,
                 " but it is not a column name in theData", sep=''))
         }
-        if (is.factor(theData[, groupBy]) == FALSE)
+        if (sapply(theData[, groupBy], class) != "factor")
         {
             stop(paste("Called getTable1Row with groupBy = ", groupBy,
                 " but ", groupBy, " is not a factor", sep=''))
@@ -281,7 +281,7 @@ buildTable1Rows <- function(theVariable, theData, groupBy = NULL, percentFirst =
 #'
 #' @seealso \code{\link{buildTable1Rows}}
 #' @export
-buildTable1 <- function(theData, theVariables, groupBy, percentFirst = TRUE,
+buildTable1 <- function(theData, theVariables, groupBy = NULL, percentFirst = TRUE,
     conductGroupTests = TRUE, combineTables = TRUE, meanDigits = getOption("digits"), sdDigits = getOption("digits"),
     freqDigits = getOption("digits"), statDigits = getOption("digits"),
     pDigits = getOption("digits"))
