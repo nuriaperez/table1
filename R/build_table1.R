@@ -93,9 +93,10 @@ buildTable1Rows <- function(theVariable, theData, groupBy = NULL, percentFirst =
 
     numericFormatStr <- paste(meanFormatStr, " (", sdFormatStr, ")", sep = "")
 
+    theVarIsNumber <- lapply(theData[1,theVariable], class) %in% c("numeric", "integer")
     # Process the 'main' demographic (i.e. the total value ignoring
     # groupBy)
-    if (is.numeric(theData[, theVariable]) | is.integer(theData[, theVariable]))
+    if (theVarIsNumber == TRUE)
     {
         table1Rows <- data.frame(Demographic = theVariable, Level = '', Value = sprintf(numericFormatStr,
             mean(theData[, theVariable], na.rm = TRUE), sd(theData[, theVariable],
@@ -134,7 +135,7 @@ buildTable1Rows <- function(theVariable, theData, groupBy = NULL, percentFirst =
     {
         # Process the 'main' demographic (i.e. the total value ignoring
         # groupBy)
-        if (is.numeric(theData[, theVariable]) == TRUE | is.numeric(theData[, theVariable]) == TRUE)
+        if (theVarIsNumber == TRUE)
         {
             groupSummary <- dplyr::select_(theData, theVariable, groupBy) %>%
                 dplyr::group_by_(groupBy) %>% dplyr::select_(theVariable) %>% na.omit() %>%
