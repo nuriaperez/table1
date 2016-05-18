@@ -21,15 +21,6 @@ buildTable1Rows <- function(theVariable, theData, groupBy = NULL, percentFirst =
     freqDigits = getOption("digits"), statDigits = getOption("digits"),
     pDigits = getOption("digits"))
     {
-    if (!("dplyr" %in% rownames(installed.packages())))
-    {
-        stop("Sorry, 'getTable1Row' requires dplyr and tidyr")
-    }
-
-    if (!("tidyr" %in% rownames(installed.packages())))
-    {
-        stop("Sorry, 'getTable1Row' requires dplyr and tidyr")
-    }
 
     if (is.data.frame(theData) == FALSE)
     {
@@ -46,6 +37,12 @@ buildTable1Rows <- function(theVariable, theData, groupBy = NULL, percentFirst =
             " but it is not a column name in theData", sep=''))
     }
 
+    if ((conductGroupTests == TRUE) & (is.null(groupBy) == TRUE))
+    {
+          warning("Called getTable1Row with conductGroupTests set to TRUE but no groupBy variable, setting conductGroupTests to FALSE")
+          conductGroupTests <- FALSE
+    }
+
     if (is.null(groupBy) == FALSE)
     {
         if (!(groupBy %in% colnames(theData)))
@@ -57,6 +54,29 @@ buildTable1Rows <- function(theVariable, theData, groupBy = NULL, percentFirst =
         {
             stop(paste("Called getTable1Row with groupBy = ", groupBy,
                 " but ", groupBy, " is not a factor", sep=''))
+        }
+
+        casesPerLevel <- as.vector(table(theData[, groupBy]))
+        numLevels <- length(casesPerLevel)
+        if ( numLevels< 2){
+          stop(paste("Called getTable1Row with groupBy = ", groupBy,
+                " but there are less than two levels in this factor", sep=''))
+        }
+        if (sum(casesPerLevel) == 0){
+          stop(paste("Called getTable1Row with groupBy = ", groupBy,
+                " but there no cases in this factor", sep=''))
+        }
+
+        levelsWithCases = 0
+        for (i in 1:numLevels)
+        {
+          if (casesPerLevel[i] != 0)
+            levelsWithCases <- levelsWithCases + 1
+        }
+        if (levelsWithCases < 2)
+        {
+          stop(paste("Called getTable1Row with groupBy = ", groupBy,
+                " but there are less than 2 levels with actual cases in the data", sep=''))
         }
     }
 
