@@ -37,6 +37,6 @@ A data.frame.
 One row is produced for numeric variables, multiple rows for factors.
 }
 \examples{
-buildTable1Rows(theData = myDataFrame, theVariable = "age", groupBy="site", percentFirst = TRUE, conductGroupTests = TRUE, meanDigits = 1, sdDigits = 1, freqDigits = 2, statDigits = 2, pDigits = 5)
+buildTable1Rows(theVariable = "age", theData = table1Dat, groupBy="site", percentFirst = TRUE, conductGroupTests = TRUE, meanDigits = 1, sdDigits = 1, freqDigits = 2, statDigits = 2, pDigits = 5)
 }
 

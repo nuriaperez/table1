@@ -14,8 +14,8 @@
 #' @param pDigits An integer indicating number of digits printed following the decimal place for test P-Values (if numer of zeros in P is greater than pDigits the value will be "< 000...1").
 #' @return A data.frame.
 #' @examples
-#' buildTable1Rows(theData = myDataFrame, theVariable = "age", groupBy="site", percentFirst = TRUE, conductGroupTests = TRUE, meanDigits = 1, sdDigits = 1, freqDigits = 2, statDigits = 2, pDigits = 5)
-
+#' buildTable1Rows(theVariable = "age", theData = table1Dat, groupBy="site", percentFirst = TRUE, conductGroupTests = TRUE, meanDigits = 1, sdDigits = 1, freqDigits = 2, statDigits = 2, pDigits = 5)
+#
 buildTable1Rows <- function(theVariable, theData, groupBy = NULL, percentFirst = TRUE,
     conductGroupTests = TRUE, meanDigits = getOption("digits"), sdDigits = getOption("digits"),
     freqDigits = getOption("digits"), statDigits = getOption("digits"),
