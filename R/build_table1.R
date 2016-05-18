@@ -33,11 +33,6 @@ buildTable1Rows <- function(theVariable, theData, groupBy = NULL, percentFirst =
     {
         stop(paste("Called getTable1Row with an empty data frame "))
     }
-    # Users of dplyr often have a tbl_df, which causes some problems with losing column types, a fix for now is to just coerce it
-    if ("tbl_df" %in% class(theData))
-    {
-      theData <- as.data.frame(theData)
-    }
 
     if (!(theVariable %in% colnames(theData)))
     {
@@ -58,13 +53,13 @@ buildTable1Rows <- function(theVariable, theData, groupBy = NULL, percentFirst =
             stop(paste("Called getTable1Row with groupBy set to ", groupBy,
                 " but it is not a column name in theData", sep=''))
         }
-        if (sapply(theData[, groupBy], class) != "factor")
+        if (sapply(theData[[groupBy]], class) != "factor")
         {
             stop(paste("Called getTable1Row with groupBy = ", groupBy,
                 " but ", groupBy, " is not a factor", sep=''))
         }
 
-        casesPerLevel <- as.vector(table(theData[, groupBy]))
+        casesPerLevel <- as.vector(table(theData[[groupBy]]))
         numLevels <- length(casesPerLevel)
         if ( numLevels< 2){
           stop(paste("Called getTable1Row with groupBy = ", groupBy,
@@ -107,6 +102,11 @@ buildTable1Rows <- function(theVariable, theData, groupBy = NULL, percentFirst =
                 na.rm = TRUE)), stringsAsFactors = FALSE)
     } else
     {
+        if (is.factor(theData[[theVariable]]) == FALSE)
+        {
+          stop(paste("called buildTable1Rows with theVariable set to ", theVariable, " but it is of class ", class(theData[[theVariable]]), " rather than  a factor", sep = ''))
+        }
+
         rows <- cbind(prop.table(table(theData[[theVariable]])) * 100,
             table(theData[[theVariable]]))
         table1Rows <- NULL
@@ -202,7 +202,7 @@ buildTable1Rows <- function(theVariable, theData, groupBy = NULL, percentFirst =
                   "percent", "countPercentStr")
                 chiData <- dplyr::ungroup(groupSummary[, c(2, 3)]) %>% dplyr::arrange_(groupBy)
                 groupByColumn <- match(groupBy, names(theData))
-                numGroups <- length(levels(theData[, groupByColumn]))
+                numGroups <- length(levels(theData[[groupByColumn]]))
                 varColumn <- match(theVariable, names(theData))
                 numVarLevels <- length(levels(theData[, varColumn]))
                 chiData$row <- rep(1:numVarLevels, numGroups)
@@ -292,11 +292,6 @@ buildTable1 <- function(theData, theVariables, groupBy = NULL, percentFirst = TR
     pDigits = getOption("digits"))
     {
 
-    # Users of dplyr often have a tbl_df, which causes some problems with losing column types, a fix for now is to just coerce it
-    if ("tbl_df" %in% class(theData))
-    {
-      theData <- as.data.frame(theData)
-    }
     table1List <- lapply(theVariables, FUN = buildTable1Rows, theData = theData,
         groupBy = groupBy, conductGroupTests = conductGroupTests, meanDigits = meanDigits,
         sdDigits = sdDigits, freqDigits = freqDigits, statDigits = statDigits,

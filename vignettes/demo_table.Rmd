@@ -1,0 +1,27 @@
+---
+title: "Untitled"
+author: "Steven Vannoy"
+date: "May 18, 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r echo=FALSE}
+library(knitr)
+library(dplyr)
+library(tidyr)
+library(table1)
+
+load(file="~/Documents/GitHub/SV_Army_analysis/armyFullDataSetForFinalAnalyses.RData")
+x <- armyFull_PDHRA_2012_2008_Research_Df
+x$Rank <- factor(ifelse(armyFull_PDHRA_2012_2008_Research_Df$grade %in% c("W01", "W02", "W03", "W04"), "Officer", "Enlisted"))
+
+table1 <- buildTable1(x, c("age", "Race1", "Ethnicity", "Rank"), groupBy="site",
+                      meanDigits=1, sdDigits=1, freqDigits = 1, statDigits = 1, pDigits=4)
+                      
+knitr::kable(table1)
+
+```
