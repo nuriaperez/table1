@@ -33,6 +33,11 @@ buildTable1Rows <- function(theVariable, theData, groupBy = NULL, percentFirst =
     {
         stop(paste("Called getTable1Row with an empty data frame "))
     }
+    # Users of dplyr often have a tbl_df, which causes some problems with losing column types, a fix for now is to just coerce it
+    if ("tbl_df" %in% class(theData))
+    {
+      theData <- as.data.frame(theData)
+    }
 
     if (!(theVariable %in% colnames(theData)))
     {
@@ -99,12 +104,12 @@ buildTable1Rows <- function(theVariable, theData, groupBy = NULL, percentFirst =
     if (theVarIsNumber == TRUE)
     {
         table1Rows <- data.frame(Demographic = theVariable, Level = '', Value = sprintf(numericFormatStr,
-            mean(theData[, theVariable], na.rm = TRUE), sd(theData[, theVariable],
+            mean(theData[[theVariable]], na.rm = TRUE), sd(theData[[theVariable]],
                 na.rm = TRUE)), stringsAsFactors = FALSE)
     } else
     {
-        rows <- cbind(prop.table(table(theData[, theVariable])) * 100,
-            table(theData[, theVariable]))
+        rows <- cbind(prop.table(table(theData[[theVariable]])) * 100,
+            table(theData[[theVariable]]))
         table1Rows <- NULL
         if (percentFirst == TRUE)
         {
@@ -169,8 +174,8 @@ buildTable1Rows <- function(theVariable, theData, groupBy = NULL, percentFirst =
             }
         } else
         {
-            groupSummary <- as.data.frame(table(theData[, theVariable],
-                theData[, groupBy]))
+            groupSummary <- as.data.frame(table(theData[[theVariable]],
+                theData[[groupBy]]))
             groupCount <- dplyr::group_by(groupSummary, Var2) %>% dplyr::summarize(count = sum(Freq))
             groupSummary$percent <- (groupSummary$Freq/groupCount$count) *
                 100
@@ -204,7 +209,7 @@ buildTable1Rows <- function(theVariable, theData, groupBy = NULL, percentFirst =
                 chiData$row <- rep(1:numVarLevels, numGroups)
                 chiData <- tidyr::spread_(data = chiData, key = groupBy, value = "Freq")
                 chiData$row <- NULL
-                chiProbs <- prop.table(table(theData[, theVariable]))
+                chiProbs <- prop.table(table(theData[[theVariable]]))
                 chiData <- as.matrix(chiData)
                 chiSquareResults <- chisq.test(chiData)
 
@@ -225,7 +230,7 @@ buildTable1Rows <- function(theVariable, theData, groupBy = NULL, percentFirst =
     { # Need to setup the 'Levels' and 'Demographic' here if there is no groupBy being done
 
       # When it's numeric, we just add an empty Level
-      if (is.numeric(theData[, theVariable]) == TRUE)
+      if (is.numeric(theData[[theVariable]]) == TRUE)
       {
         table1Rows$Level <- ''
         table1Rows <- dplyr::select(table1Rows, Demographic, Level, everything())
@@ -288,6 +293,11 @@ buildTable1 <- function(theData, theVariables, groupBy = NULL, percentFirst = TR
     pDigits = getOption("digits"))
     {
 
+    # Users of dplyr often have a tbl_df, which causes some problems with losing column types, a fix for now is to just coerce it
+    if ("tbl_df" %in% class(theData))
+    {
+      theData <- as.data.frame(theData)
+    }
     table1List <- lapply(theVariables, FUN = buildTable1Rows, theData = theData,
         groupBy = groupBy, conductGroupTests = conductGroupTests, meanDigits = meanDigits,
         sdDigits = sdDigits, freqDigits = freqDigits, statDigits = statDigits,
