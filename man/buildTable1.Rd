@@ -54,7 +54,10 @@ group means, factors are evaluated by \eqn{chi}-squared test of independence.
 Uses buildTable1Rows to build a list of data.frames constituting table 1.
 }
 \examples{
-table1Tables <- buildTable1(theData = table1Dat, theVariables = c("age", "sex", "Race", "Ethnicity", "Rank"), groupBy="site", percentFirst = TRUE, meanDigits = 1, sdDigits = 1, freqDigits = 2, statDigits = 2, pDigits = 5)
+library(dplyr)
+library(tidyr)
+table1Tables <- buildTable1(theData = table1Dat, theVariables = c("age", "sex", "Race", "Ethnicity", "Rank"),
+ groupBy="site", percentFirst = TRUE, meanDigits = 1, sdDigits = 1, freqDigits = 2, statDigits = 2, pDigits = 5)
 lapply(table1Tables, print)
 
 }

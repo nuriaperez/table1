@@ -1,4 +1,6 @@
 library(table1)
+library(dplyr)
+library(tidyr)
 context("Full Table")
 
 test_that("buildTable1 runs full table development without any errors", {

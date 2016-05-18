@@ -17,4 +17,7 @@ BugReports: https://github.com/svannoy/table1/issues
 URL: https://github.com/svannoy/table1
 Authors@R: person("Steven", "Vannoy", email = "steven.vannoy@gmail.com",
   role = c("aut", "cre"))
-Suggests: testthat
+Suggests: testthat,
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr

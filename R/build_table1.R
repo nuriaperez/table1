@@ -14,8 +14,11 @@
 #' @param pDigits An integer indicating number of digits printed following the decimal place for test P-Values (if numer of zeros in P is greater than pDigits the value will be "< 000...1").
 #' @return A data.frame.
 #' @examples
-#' buildTable1Rows(theVariable = "age", theData = table1Dat, groupBy="site", percentFirst = TRUE, conductGroupTests = TRUE, meanDigits = 1, sdDigits = 1, freqDigits = 2, statDigits = 2, pDigits = 5)
-#
+#' library(dplyr)
+#' library(tidyr)
+#' buildTable1Rows(theVariable = "age", theData = table1Dat, groupBy="site", percentFirst = TRUE,
+#' conductGroupTests = TRUE, meanDigits = 1, sdDigits = 1, freqDigits = 2, statDigits = 2, pDigits = 5)
+#' @export
 buildTable1Rows <- function(theVariable, theData, groupBy = NULL, percentFirst = TRUE,
     conductGroupTests = TRUE, meanDigits = getOption("digits"), sdDigits = getOption("digits"),
     freqDigits = getOption("digits"), statDigits = getOption("digits"),
@@ -133,14 +136,9 @@ buildTable1Rows <- function(theVariable, theData, groupBy = NULL, percentFirst =
         # groupBy)
         if (is.numeric(theData[, theVariable]) == TRUE)
         {
-            # Used to have na.omit in here, I don't think it is necessary or wanted
-            # but I'm leaving the syntaxt for now groupSummary <-
-            # na.omit(select_(theData, theVariable, groupBy)) %>%
-            # group_by_(groupBy) %>% select_(theVariable) %>%
-            # dplyr::summarize_each(funs(mean, sd))
-            groupSummary <- select_(theData, theVariable, groupBy) %>%
-                group_by_(groupBy) %>% select_(theVariable) %>% na.omit() %>%
-                dplyr::summarize_each(funs(mean, sd))
+            groupSummary <- dplyr::select_(theData, theVariable, groupBy) %>%
+                dplyr::group_by_(groupBy) %>% dplyr::select_(theVariable) %>% na.omit() %>%
+                dplyr::summarize_each(dplyr::funs(mean, sd))
             groupRow <- NULL
             for (i in 1:nrow(groupSummary))
             {
@@ -172,7 +170,7 @@ buildTable1Rows <- function(theVariable, theData, groupBy = NULL, percentFirst =
         {
             groupSummary <- as.data.frame(table(theData[, theVariable],
                 theData[, groupBy]))
-            groupCount <- group_by(groupSummary, Var2) %>% dplyr::summarize(count = sum(Freq))
+            groupCount <- dplyr::group_by(groupSummary, Var2) %>% dplyr::summarize(count = sum(Freq))
             groupSummary$percent <- (groupSummary$Freq/groupCount$count) *
                 100
             if (percentFirst == TRUE)
@@ -184,12 +182,12 @@ buildTable1Rows <- function(theVariable, theData, groupBy = NULL, percentFirst =
                 groupSummary$countPercentStr <- sprintf(formatStr, groupSummary$Freq,
                   "", groupSummary$percent, "%")
             }
-            groupTable <- select(groupSummary, Var1, Var2, countPercentStr)
+            groupTable <- dplyr::select(groupSummary, Var1, Var2, countPercentStr)
             names(groupTable) <- c(theVariable, groupBy, "countPercentStr")
-            groupTable <- spread_(groupTable, groupBy, "countPercentStr")
-            table1Rows <- left_join(x = table1Rows, y = groupTable, by = theVariable)
+            groupTable <- tidyr::spread_(groupTable, groupBy, "countPercentStr")
+            table1Rows <- dplyr::left_join(x = table1Rows, y = groupTable, by = theVariable)
             table1Rows <- cbind(Demographic = c(theVariable, rep('', nrow(table1Rows)-1)), table1Rows)
-            table1Rows <- rename_(table1Rows, Level = theVariable)
+            table1Rows <- dplyr::rename_(table1Rows, Level = theVariable)
             table1Rows$Level <- as.character(table1Rows$Level)
 
             # Do chi-square test to see if they differ by grouping variable
@@ -197,13 +195,13 @@ buildTable1Rows <- function(theVariable, theData, groupBy = NULL, percentFirst =
             {
                 names(groupSummary) <- c(theVariable, groupBy, "Freq",
                   "percent", "countPercentStr")
-                chiData <- ungroup(groupSummary[, c(2, 3)]) %>% arrange_(groupBy)
+                chiData <- dplyr::ungroup(groupSummary[, c(2, 3)]) %>% dplyr::arrange_(groupBy)
                 groupByColumn <- match(groupBy, names(theData))
                 numGroups <- length(levels(theData[, groupByColumn]))
                 varColumn <- match(theVariable, names(theData))
                 numVarLevels <- length(levels(theData[, varColumn]))
                 chiData$row <- rep(1:numVarLevels, numGroups)
-                chiData <- spread_(data = chiData, key = groupBy, value = "Freq")
+                chiData <- tidyr::spread_(data = chiData, key = groupBy, value = "Freq")
                 chiData$row <- NULL
                 chiProbs <- prop.table(table(theData[, theVariable]))
                 chiData <- as.matrix(chiData)
@@ -229,11 +227,11 @@ buildTable1Rows <- function(theVariable, theData, groupBy = NULL, percentFirst =
       if (is.numeric(theData[, theVariable]) == TRUE)
       {
         table1Rows$Level <- ''
-        table1Rows <- select(table1Rows, Demographic, Level, everything())
+        table1Rows <- dplyr::select(table1Rows, Demographic, Level, everything())
       } else
       {
         table1Rows <- cbind(Demographic = c(theVariable, rep('', nrow(table1Rows)-1)), table1Rows)
-        table1Rows <- rename_(table1Rows, Level = theVariable)
+        table1Rows <- dplyr::rename_(table1Rows, Level = theVariable)
       }
 
     }
@@ -275,11 +273,14 @@ buildTable1Rows <- function(theVariable, theData, groupBy = NULL, percentFirst =
 #'
 #'
 #' @examples
-#' table1Tables <- buildTable1(theData = table1Dat, theVariables = c("age", "sex", "Race", "Ethnicity", "Rank"), groupBy="site", percentFirst = TRUE, meanDigits = 1, sdDigits = 1, freqDigits = 2, statDigits = 2, pDigits = 5)
+#' library(dplyr)
+#' library(tidyr)
+#' table1Tables <- buildTable1(theData = table1Dat, theVariables = c("age", "sex", "Race", "Ethnicity", "Rank"),
+#'  groupBy="site", percentFirst = TRUE, meanDigits = 1, sdDigits = 1, freqDigits = 2, statDigits = 2, pDigits = 5)
 #' lapply(table1Tables, print)
 #'
 #' @seealso \code{\link{buildTable1Rows}}
-#'
+#' @export
 buildTable1 <- function(theData, theVariables, groupBy, percentFirst = TRUE,
     conductGroupTests = TRUE, combineTables = TRUE, meanDigits = getOption("digits"), sdDigits = getOption("digits"),
     freqDigits = getOption("digits"), statDigits = getOption("digits"),

@@ -5,7 +5,7 @@
 table1Dat/data.frame
 }
 \description{
-%%  ~~ Demonstration data for the table1 package. Just enough to execute the examples and illustrate the features ~~
+Demonstration data for the table1 package. Just enough to execute the examples and illustrate the features
 }
 \usage{data("table1Dat")}
 \format{
@@ -19,15 +19,6 @@ table1Dat/data.frame
     \item{\code{Race}}{a factor with levels \code{AIAN} \code{Asian} \code{Black} \code{NHPI} \code{White}}
     \item{\code{Ethnicity}}{a factor with levels \code{Hispanic} \code{Not Hispanic}}
   }
-}
-\details{
-%%  ~~ If necessary, more details than the __description__ above ~~
-}
-\source{
-%%  ~~ reference to a publication or URL from which the data were obtained ~~
-}
-\references{
-%%  ~~ possibly secondary sources and usages ~~
 }
 \examples{
 data(table1Dat)
