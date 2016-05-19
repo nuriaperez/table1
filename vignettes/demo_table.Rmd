@@ -1,6 +1,6 @@
 ---
 title: "Untitled"
-author: "Steven Vannoy"
+author: "Your Name"
 date: "May 18, 2016"
 output: word_document
 ---
@@ -15,16 +15,7 @@ library(dplyr, warn.conflicts = FALSE, verbose=FALSE, quietly = TRUE)
 library(tidyr, warn.conflicts = FALSE, verbose=FALSE, quietly = TRUE)
 library(table1, warn.conflicts = FALSE, verbose=FALSE, quietly = TRUE)
 
-suppressWarnings("table1")
-
-load(file="~/Documents/GitHub/SV_Army_analysis/armyFullDataSetForFinalAnalyses.RData")
-x <- armyFull_PDHRA_2012_2008_Research_Df
-x$Rank <- factor(ifelse(armyFull_PDHRA_2012_2008_Research_Df$grade %in% c("W01", "W02", "W03", "W04"), "Officer", "Enlisted"))
-x$Race1 <- as.factor(x$Race1)
-x$Ethnicity <- as.factor(x$Race1)
-x$phqSI <- as.factor(x$phqSI)
-
-table1 <- buildTable1(x, c("age", "Race1", "Ethnicity", "Rank", "phq9", "phqSI"), groupBy="site",
+table1 <- buildTable1(table1Dat, c("age", "Race", "Ethnicity", "Rank"), groupBy="site",
                       meanDigits=1, sdDigits=1, freqDigits = 1, statDigits = 1, pDigits=4)
                       
 knitr::kable(table1)

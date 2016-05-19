@@ -9,6 +9,24 @@ It is also very common to conduct statistical tests to determine if demographic 
 
 While R does all of these tasks very easily, what is missing is a convenient way to assemble them into a table that can be exported to Microsoft Word (MS-Word) that doesn't require subtantial editing.
 
+Delow you see to versions of a *Table 1* the first is the output using RMarkdown to MS-Word and the second is the table with manual edits made to conform to a typical journal format.
+
+![](table1Image_Raw.png)   
+  
+.  
+And the final version  
+.  
+
+![](table1Image_Final.png)  
+.  
+.  
+As you can see, there is minimal editing required to have a final product.  
+
+The primary function in the `table1` package is `buildTable1`, which relies upon `buildTable1Rows`. I have exported `buildTable1Rows` so you can call it directly, although I think in general one would call `buildTable1`. I have tried to make the functions as robust as possible so many errors are detected with helpful error messages, such as **You called `buildTable1Rows` with `groupBy` set to `age` which is not a factor**. See the built in help functions for more details.  
+  
+  
+  
+Currently, the package is only available on GitHub and thus you must use Hadley Wickham's devtools package to install it. If you haven't installed that package, begin there (see commented command below in the installation instructions).
 
 ## Installation
 
