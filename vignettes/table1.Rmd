@@ -9,50 +9,28 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-Vignettes are long form documentation commonly included in packages. Because they are part of the distribution of the package, they need to be as compact as possible. The `html_vignette` output type provides a custom style sheet (and tweaks some options) to ensure that the resulting html is as small as possible. The `html_vignette` format:
-
-- Never uses retina figures
-- Has a smaller default figure size
-- Uses a custom CSS stylesheet instead of the default Twitter Bootstrap style
-
-## Vignette Info
-
-Note the various macros within the `vignette` section of the metadata block above. These are required in order to instruct R how to build the vignette. Note that you should change the `title` field and the `\VignetteIndexEntry` to match the title of your vignette.
-
-## Styles
-
-The `html_vignette` template includes a basic CSS theme. To override this theme you can specify your own CSS in the document metadata as follows:
-
-    output: 
-      rmarkdown::html_vignette:
-        css: mystyles.css
-
-## Figures
-
-The figure sizes have been customised so that you can easily put two images side-by-side. 
-
-```{r, fig.show='hold'}
-plot(1:10)
-plot(10:1)
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
 ```
 
-You can enable figure captions by `fig_caption: yes` in YAML:
 
-    output:
-      rmarkdown::html_vignette:
-        fig_caption: yes
+```{r echo=FALSE}
 
-Then you can use the chunk option `fig.cap = "Your figure caption."` in **knitr**.
+## Final exam CSP 708 - Spring, 2016
+##
+library(dplyr, warn.conflicts = FALSE, verbose=FALSE, quietly = TRUE)
+library(tidyr, warn.conflicts = FALSE, verbose=FALSE, quietly = TRUE)
+library(table1, warn.conflicts = FALSE, verbose=FALSE, quietly = TRUE)
+#source("~/Documents/GitHub/table1/R/build_table1.R")
+source("~/Documents/GitHub/MyGeneralRFunctions/myPrintFunctions.R")
 
-## More Examples
-
-You can write math expressions, e.g. $Y = X\beta + \epsilon$, footnotes^[A footnote here.], and tables, e.g. using `knitr::kable()`.
-
-```{r, echo=FALSE, results='asis'}
-knitr::kable(head(mtcars, 10))
+#load("~/Documents/GitHub/table1/data/table1Dat.rda")
 ```
 
-Also a quote using `>`:
+```{r echo=TRUE}
 
-> "He who gives up [code] safety for [code] speed deserves neither."
-([via](https://twitter.com/hadleywickham/status/504368538874703872))
+table1 <- buildTable1(theData = table1Dat, theVariables = c("age", "sex", "Race", "Ethnicity", "Rank"), groupBy="site", percentFirst = TRUE, combineTables = TRUE, meanDigits = 1, sdDigits = 1, freqDigits = 2, statDigits = 2, pDigits = 5)
+```
+```{r echo=FALSE}
+knitr::kable(table1)
+```
