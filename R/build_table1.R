@@ -1,17 +1,8 @@
 #' Build rows for table-1.
 #'
 #' One row is produced for numeric variables, multiple rows for factors.
-#'
-#' @param theVariable The name of the variable that is being reported in the row (a character vector).
-#' @param theData The data.frame containing the data for the variable.
-#' @param groupBy A variable (factor) used to stratify the variable being reported (see details below).
-#' @param percentFirst A boolean, if TRUE numeric variables are printed as x\%(n) otherwise as n(x\%).
-#' @param conductGroupTests A boolean, if TRUE group comparisons are conducted (see details below).
-#' @param meanDigits An integer indicating number of digits printed following the decimal place (this is not precision as in round, you get the number of digits you ask for, even if they are zero).
-#' @param sdDigits An integer indicating number of digits printed following the decimal place for standard deviations (this is not precision as in round, you get the number of digits you ask for, even if they are zero).
-#' @param freqDigits An integer indicating number of digits printed following the decimal place for percentages (this is not precision as in round, you get the number of digits you ask for, even if they are zero).
-#' @param statDigits An integer indicating number of digits printed following the decimal place for test statistics (this is not precision as in round, you get the number of digits you ask for, even if they are zero).
-#' @param pDigits An integer indicating number of digits printed following the decimal place for test P-Values (if numer of zeros in P is greater than pDigits the value will be "< 000...1").
+#' @param theVariable A character vector specifying the name (column) to be processed
+#' @inheritParams buildTable1
 #' @return A data.frame.
 #' @examples
 #' library(dplyr)
@@ -20,7 +11,7 @@
 #' conductGroupTests = TRUE, meanDigits = 1, sdDigits = 1, freqDigits = 2, statDigits = 2, pDigits = 5)
 #' @export
 buildTable1Rows <- function(theVariable, theData, groupBy = NULL, percentFirst = TRUE,
-    conductGroupTests = TRUE, meanDigits = getOption("digits"), sdDigits = getOption("digits"),
+    conductGroupTests = TRUE, stringsAsFactors = FALSE, meanDigits = getOption("digits"), sdDigits = getOption("digits"),
     freqDigits = getOption("digits"), statDigits = getOption("digits"),
     pDigits = getOption("digits"))
     {
@@ -102,9 +93,16 @@ buildTable1Rows <- function(theVariable, theData, groupBy = NULL, percentFirst =
                 na.rm = TRUE)), stringsAsFactors = FALSE)
     } else
     {
+        # Check type and convert to factor if appriate and requested
         if (is.factor(theData[[theVariable]]) == FALSE)
         {
-          stop(paste("called buildTable1Rows with theVariable set to ", theVariable, " but it is of class ", class(theData[[theVariable]])[1], " rather than  a factor", sep = ''))
+          if (is.character(theData[[theVariable]]) & (stringsAsFactors == TRUE))
+          {
+            theData[[theVariable]] <- as.factor(theData[[theVariable]])
+          } else
+          {
+            stop(paste("called buildTable1Rows with theVariable set to ", theVariable, " which is of class  ", class(theData[[theVariable]])[1], " rather than  a factor", " If you have a character vector and want it to be treated as a factor, try setting stringsAsFactors = TRUE", sep = ''))
+          }
         }
 
         rows <- cbind(prop.table(table(theData[[theVariable]])) * 100,
@@ -255,6 +253,7 @@ buildTable1Rows <- function(theVariable, theData, groupBy = NULL, percentFirst =
 #' @param percentFirst A boolean, if TRUE numeric variables are printed as x\%(n) otherwise as n(x\%).
 #' @param conductGroupTests A boolean, if TRUE group comparisons are conducted (see details below).
 #' @param combineTables A boolean, if TRUE tables are combined into 1 data frame, otherwise a list is returned with a data.frame for each variable.
+#' @param stringsAsFactors A boolean, if TRUE, any variable that is of type character will get coerced to a factor.
 #' @param meanDigits An integer indicating number of digits printed following the decimal place (this is not precision as in round, you get the number of digits you ask for, even if they are zero).
 #' @param sdDigits An integer indicating number of digits printed following the decimal place for standard deviations (this is not precision as in round, you get the number of digits you ask for, even if they are zero).
 #' @param freqDigits An integer indicating number of digits printed following the decimal place for percentages (this is not precision as in round, you get the number of digits you ask for, even if they are zero).
@@ -287,13 +286,13 @@ buildTable1Rows <- function(theVariable, theData, groupBy = NULL, percentFirst =
 #' @seealso \code{\link{buildTable1Rows}}
 #' @export
 buildTable1 <- function(theData, theVariables, groupBy = NULL, percentFirst = TRUE,
-    conductGroupTests = TRUE, combineTables = TRUE, meanDigits = getOption("digits"), sdDigits = getOption("digits"),
+    conductGroupTests = TRUE, combineTables = TRUE, stringsAsFactors = FALSE, meanDigits = getOption("digits"), sdDigits = getOption("digits"),
     freqDigits = getOption("digits"), statDigits = getOption("digits"),
     pDigits = getOption("digits"))
     {
 
     table1List <- lapply(theVariables, FUN = buildTable1Rows, theData = theData,
-        groupBy = groupBy, conductGroupTests = conductGroupTests, meanDigits = meanDigits,
+        groupBy = groupBy, conductGroupTests = conductGroupTests, stringsAsFactors = stringsAsFactors, meanDigits = meanDigits,
         sdDigits = sdDigits, freqDigits = freqDigits, statDigits = statDigits,
         pDigits = pDigits)
 

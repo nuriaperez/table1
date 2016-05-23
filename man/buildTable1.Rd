@@ -6,9 +6,9 @@
 \usage{
 buildTable1(theData, theVariables, groupBy = NULL, percentFirst = TRUE,
   conductGroupTests = TRUE, combineTables = TRUE,
-  meanDigits = getOption("digits"), sdDigits = getOption("digits"),
-  freqDigits = getOption("digits"), statDigits = getOption("digits"),
-  pDigits = getOption("digits"))
+  stringsAsFactors = FALSE, meanDigits = getOption("digits"),
+  sdDigits = getOption("digits"), freqDigits = getOption("digits"),
+  statDigits = getOption("digits"), pDigits = getOption("digits"))
 }
 \arguments{
 \item{theData}{The data.frame containing the data for the variable.}
@@ -22,6 +22,8 @@ buildTable1(theData, theVariables, groupBy = NULL, percentFirst = TRUE,
 \item{conductGroupTests}{A boolean, if TRUE group comparisons are conducted (see details below).}
 
 \item{combineTables}{A boolean, if TRUE tables are combined into 1 data frame, otherwise a list is returned with a data.frame for each variable.}
+
+\item{stringsAsFactors}{A boolean, if TRUE, any variable that is of type character will get coerced to a factor.}
 
 \item{meanDigits}{An integer indicating number of digits printed following the decimal place (this is not precision as in round, you get the number of digits you ask for, even if they are zero).}
 

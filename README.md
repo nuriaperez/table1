@@ -34,6 +34,6 @@ Development version from github:
 
 ```R
 # install.packages("devtools")
-devtools::install_github("svannoy/table1")
+devtools::install_github("svannoy/table1", build_vignettes = TRUE)
 ```
 The file ***build_table1_demo.Rmd*** in the ***R*** folder provides a demo for building a table.

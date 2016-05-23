@@ -5,12 +5,13 @@
 \title{Build rows for table-1.}
 \usage{
 buildTable1Rows(theVariable, theData, groupBy = NULL, percentFirst = TRUE,
-  conductGroupTests = TRUE, meanDigits = getOption("digits"),
-  sdDigits = getOption("digits"), freqDigits = getOption("digits"),
-  statDigits = getOption("digits"), pDigits = getOption("digits"))
+  conductGroupTests = TRUE, stringsAsFactors = FALSE,
+  meanDigits = getOption("digits"), sdDigits = getOption("digits"),
+  freqDigits = getOption("digits"), statDigits = getOption("digits"),
+  pDigits = getOption("digits"))
 }
 \arguments{
-\item{theVariable}{The name of the variable that is being reported in the row (a character vector).}
+\item{theVariable}{A character vector specifying the name (column) to be processed}
 
 \item{theData}{The data.frame containing the data for the variable.}
 
@@ -19,6 +20,8 @@ buildTable1Rows(theVariable, theData, groupBy = NULL, percentFirst = TRUE,
 \item{percentFirst}{A boolean, if TRUE numeric variables are printed as x\%(n) otherwise as n(x\%).}
 
 \item{conductGroupTests}{A boolean, if TRUE group comparisons are conducted (see details below).}
+
+\item{stringsAsFactors}{A boolean, if TRUE, any variable that is of type character will get coerced to a factor.}
 
 \item{meanDigits}{An integer indicating number of digits printed following the decimal place (this is not precision as in round, you get the number of digits you ask for, even if they are zero).}
 
