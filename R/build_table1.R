@@ -166,7 +166,7 @@ buildTable1Rows <- function(theVariable, theData, groupBy = NULL, percentFirst =
                 # zero is helpful/valid
                 if (as.numeric(table1Rows$PValue) == 0)
                 {
-                  table1Rows$PValue <- paste("< ", gsub("(.*)\\0", "\\1", table1Rows$PValue, '1'),'01', sep='')
+                  table1Rows$PValue <- paste("< ", gsub("(.*)\\0", "\\1", table1Rows$PValue, '1'),'1', sep='')
                 }
             }
         } else
@@ -219,7 +219,7 @@ buildTable1Rows <- function(theVariable, theData, groupBy = NULL, percentFirst =
                 # zero is helpful/valid
                 if (as.numeric(table1Rows$PValue[1]) == 0)
                 {
-                  table1Rows$PValue[1] <- paste("< ", gsub("(.*)\\0", "\\1", table1Rows$PValue[1], '1'),'01', sep='')
+                  table1Rows$PValue[1] <- paste("< ", gsub("(.*)\\0", "\\1", table1Rows$PValue[1], '1'),'1', sep='')
                 }
             }
         }
