@@ -28,5 +28,5 @@ library(table1, warn.conflicts = FALSE, verbose=FALSE, quietly = TRUE)
 table1 <- buildTable1(theData = table1Dat, theVariables = c("age", "sex", "Race", "Ethnicity", "Rank"), groupBy="site", percentFirst = TRUE, combineTables = TRUE, meanDigits = 1, sdDigits = 1, freqDigits = 2, statDigits = 2, pDigits = 5)
 ```
 ```{r echo=FALSE}
-knitr::kable(table1)
+knitr::kable(table1, align='r')
 ```
