@@ -11,7 +11,8 @@ RoxygenNote: 5.0.1
 Date: "5/16/2016"
 Imports:
   dplyr,
-  tidyr
+  tidyr,
+  stringi
 Depends: R (>= 2.10)
 BugReports: https://github.com/svannoy/table1/issues
 URL: https://github.com/svannoy/table1

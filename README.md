@@ -33,7 +33,9 @@ Currently, the package is only available on GitHub and thus you must use Hadley 
 Development version from github:
 
 ```R
-# install.packages("devtools")
+# install.packages("devtools") # Uncomment this line if you don't have devtools installed already
 devtools::install_github("svannoy/table1", build_vignettes = TRUE)
 ```
-The file ***build_table1_demo.Rmd*** in the ***R*** folder provides a demo for building a table.
+  
+  
+The file ***table1_markdown_example.Rmd*** in the ***Examples*** folder on github provides a demo for building a table.

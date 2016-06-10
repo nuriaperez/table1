@@ -19,6 +19,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ##
 library(dplyr, warn.conflicts = FALSE, verbose=FALSE, quietly = TRUE)
 library(tidyr, warn.conflicts = FALSE, verbose=FALSE, quietly = TRUE)
+library(stringi, warn.conflicts = FALSE, verbose=FALSE, quietly = TRUE)
 library(table1, warn.conflicts = FALSE, verbose=FALSE, quietly = TRUE)
 ```
 
