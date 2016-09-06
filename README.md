@@ -38,4 +38,4 @@ devtools::install_github("svannoy/table1", build_vignettes = TRUE)
 ```
   
   
-The file ***table1_markdown_example.Rmd*** in the ***Examples*** folder on github provides a demo for building a table.
+The file ***table1_markdown_example.Rmd*** in the ***Vignettes*** folder on github provides a demo for building a table.
