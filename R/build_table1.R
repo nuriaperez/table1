@@ -140,7 +140,7 @@ buildTable1Rows <- function(theVariable, theData, groupBy = NULL, percentFirst =
         if (is.numeric(theData[[theVariable]]) == TRUE)
         {
             groupSummary <- dplyr::select_(theData, theVariable, groupBy) %>%
-                dplyr::group_by_(groupBy) %>% dplyr::select_(theVariable) %>% na.omit() %>%
+                dplyr::group_by_(groupBy) %>% dplyr::select_(theVariable, groupBy) %>% na.omit() %>%
                 dplyr::summarize_each(dplyr::funs(mean, sd))
             groupRow <- NULL
             for (i in 1:nrow(groupSummary))
